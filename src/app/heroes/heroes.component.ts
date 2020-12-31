@@ -27,6 +27,7 @@ export class HeroesComponent implements OnInit {
     this.selectedHero = hero;
   }
 
+  //asynchronouse approach that passes the emitted array to the callback, which sets the component's heroes property
   getHeroes(): void{
     this.heroService.getHeroes()
     .subscribe(heroes => this.heroes = heroes);
