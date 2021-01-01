@@ -3,8 +3,7 @@ import { Hero } from '../hero';
 import { ActivatedRoute, ActivationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { HeroService } from '../hero.service';
-import { prepareEventListenerParameters } from '@angular/compiler/src/render3/view/template';
-import { identifierModuleUrl } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-hero-detail',
