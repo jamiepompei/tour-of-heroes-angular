@@ -70,7 +70,7 @@ export class HeroService {
 
   /**DELETE: delete the hero from the server */
   deleteHero(hero: Hero | number): Observable<Hero>{
-    const id = typeof === 'number' ? hero : hero.id;
+    const id = typeof hero === 'number' ? hero : hero.id;
     const url = `${this.heroesUrl}/${id}`;
 
     return this.http.delete<Hero>(url, this.httpOptions).pipe(
