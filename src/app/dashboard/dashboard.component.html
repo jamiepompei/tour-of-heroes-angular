@@ -1,7 +1,7 @@
 <h3>Top Heroes</h3>
 <!-- presents a grid of hero name links. *ngFor repeater creates as many links as there are in the component's heroes array -->
 <div class="grid grid-pad">
-    <!-- interpolation binding with *ngFor repeater to insert the curren iteration's hero.id into each routerLink -->
+    <!-- interpolation binding with *ngFor repeater to insert the current iteration's hero.id into each routerLink -->
     <a *ngFor="let hero of heroes" class="col-1-4"
         routerLink="/detail/{{hero.id}}">
         <div class="module hero">

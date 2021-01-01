@@ -10,6 +10,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class HeroService {
+
   private heroesUrl = 'api/heroes'; // URL to web API
 
   httpOptions = {
@@ -24,18 +25,12 @@ export class HeroService {
     private messageService: MessageService
   ) { }
 
-//Log a HeroService message with the MessageService
-  private log(message: string){
-    this.messageService.add(`HeroService: ${message}`);
-  }
-   
 
   /* returns an Observable<Hero[]>; that is, "an observable of hero arrays". 
   In practice, it will only return a single hero array.
   */
   getHeroes(): Observable<Hero[]> {
     //TODO: send the message_after_ fetching the heroes
-    this.messageService.add('HeroService: fetched heroes');
     return this.http.get<Hero[]>(this.heroesUrl)
     .pipe(
       tap(_ => this.log('fetched heroes')),
@@ -43,7 +38,7 @@ export class HeroService {
     ); 
   }
 
-  //GET hero by od/ Will 404 if not found 
+  //GET hero by id/ Will 404 if not found 
   getHero(id: number): Observable<Hero> {
     const url = `${this.heroesUrl}/${id}`;
     return this.http.get<Hero>(url).pipe(
@@ -52,9 +47,26 @@ export class HeroService {
     );
   }
 
+  /** GET hero by id. Return `undefined` when id not found */
+  getHeroNo404<Data>(id: number): Observable<Hero> {
+    const url = `${this.heroesUrl}/?id=${id}`;
+    return this.http.get<Hero[]>(url)
+      .pipe(
+        map(heroes => heroes[0]), // returns a {0|1} element array
+        tap(h => {
+          const outcome = h ? `fetched` : `did not find`;
+          this.log(`${outcome} hero id=${id}`);
+        }),
+        catchError(this.handleError<Hero>(`getHero id=${id}`))
+      );
+  }
+
+///////////////////// SAVE METHODS //////////////////////////
+
   /**PUT: update the hero on the server */
-  updateHero(hero: Hero): Observable<any>{
-    return this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
+  updateHero(hero: Hero): Observable<any> {
+    return this.http.put(this.heroesUrl, hero, 
+      this.httpOptions).pipe(
       tap(_ => this.log(`updated hero id=${hero.id}`)),
       catchError(this.handleError<any>('updateHero'))
     );
@@ -113,5 +125,10 @@ export class HeroService {
         //Let the app keep running by returning an empty result.
           return of(result as T);
     };
-    }
+  }
+
+    //Log a HeroService message with the MessageService
+  private log(message: string){
+    this.messageService.add(`HeroService: ${message}`);
+  }
 }

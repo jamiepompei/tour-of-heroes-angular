@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Hero } from '../hero';
 import { ActivatedRoute, ActivationEnd } from '@angular/router';
 import { Location } from '@angular/common';
@@ -12,7 +12,7 @@ import { HeroService } from '../hero.service';
 })
 export class HeroDetailComponent implements OnInit {
 
-  @Input() hero: Hero;
+ hero: Hero;
 
   // the activated route holds info about the route to this instance of HeroDetailComponent. This component is interested in the routes prepareEventListenerParameters, the identifierModuleUrl, to dispaly.
   //heroSerice gets hero data from the remote server and this component will used it to get the hero-to-display
@@ -42,7 +42,7 @@ export class HeroDetailComponent implements OnInit {
 
   save(): void{
     this.heroService.updateHero(this.hero)
-    .subscribe(() => this.goBack());
+      .subscribe(() => this.goBack());
   }
 
 }
